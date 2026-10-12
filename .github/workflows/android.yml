@@ -1,0 +1,80 @@
+name: Android APK
+
+on:
+workflow_dispatch:
+push:
+branches:
+- main
+
+jobs:
+build:
+runs-on: ubuntu-latest
+steps:
+- name: Baixar o projeto
+uses: actions/checkout@v4
+
+  - name: Configurar Java
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: '17'
+
+  - name: Configurar Android SDK
+    uses: android-actions/setup-android@v3
+
+  - name: Preparar estrutura Android
+    run: |
+      mkdir -p app/src/main/assets app/src/main/java/com/footballmanager/game
+      cp index.html app/src/main/assets/index.html
+      cp game.js app/src/main/assets/game.js
+      cp style.css app/src/main/assets/style.css
+      cp AndroidManifest.xml app/src/main/AndroidManifest.xml
+      cp MainActivity.java app/src/main/java/com/footballmanager/game/MainActivity.java
+      cp ic_launcher.xml app/src/main/res/drawable/ic_launcher.xml
+      cp build.gradle app/build.gradle
+      cat > settings.gradle <<'EOF'
+      pluginManagement {
+          repositories {
+              google()
+              mavenCentral()
+              gradlePluginPortal()
+          }
+      }
+      dependencyResolutionManagement {
+          repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+          repositories {
+              google()
+              mavenCentral()
+          }
+      }
+      rootProject.name = 'FootballManager'
+      include ':app'
+      EOF
+      echo "android.useAndroidX=true" > gradle.properties
+      cat > app/build.gradle <<'EOF'
+      plugins {
+          id 'com.android.application'
+      }
+      android {
+          namespace 'com.footballmanager.game'
+          compileSdk 35
+          defaultConfig {
+              applicationId 'com.footballmanager.game'
+              minSdk 23
+              targetSdk 35
+              versionCode 1
+              versionName '1.0'
+          }
+      }
+      EOF
+
+  - name: Gerar APK
+    run: |
+      gradle --version
+      gradle assembleDebug
+
+  - name: Disponibilizar APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: Legado-de-Treinador-APK
+      path: app/build/outputs/apk/debug/app-debug.apk
