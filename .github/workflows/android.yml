@@ -27,11 +27,14 @@ jobs:
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Aceitar licenças Android
+        run: |
+          set +o pipefail
+          yes | sdkmanager --licenses
+
       - name: Instalar componentes Android
         run: |
-          sdkmanager --list
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Preparar projeto Android
         run: |
@@ -120,3 +123,4 @@ jobs:
           name: Legado-de-Treinador-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          
