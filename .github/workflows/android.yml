@@ -1,5 +1,5 @@
 
-name: Android APK
+name: Gerar APK - Legado de Treinador
 
 on:
   push:
@@ -26,12 +26,11 @@ jobs:
 
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-          packages: |
-            platform-tools
-            platforms;android-35
-            build-tools;35.0.0
+
+      - name: Instalar componentes Android
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Preparar projeto Android
         run: |
@@ -60,7 +59,7 @@ jobs:
               }
           }
 
-          rootProject.name = 'FootballManager'
+          rootProject.name = 'LegadoDeTreinador'
           include ':app'
           EOF
 
@@ -92,7 +91,7 @@ jobs:
           cat > app/src/main/AndroidManifest.xml <<'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <application
-                  android:label="Football Manager"
+                  android:label="Legado de Treinador"
                   android:theme="@android:style/Theme.Material.Light.NoActionBar">
                   <activity
                       android:name=".MainActivity"
@@ -117,6 +116,6 @@ jobs:
       - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
-          name: Football-Manager-APK
+          name: Legado-de-Treinador-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
