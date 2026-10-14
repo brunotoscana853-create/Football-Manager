@@ -45,6 +45,8 @@ jobs:
           cp index.html app/src/main/assets/index.html
           cp game.js app/src/main/assets/game.js
           cp style.css app/src/main/assets/style.css
+          cp data-loader.js app/src/main/assets/data-loader.js
+          cp data.json app/src/main/assets/data.json
           cp MainActivity.java app/src/main/java/com/footballmanager/game/MainActivity.java
 
           cat > settings.gradle <<'EOF'
