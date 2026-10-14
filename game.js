@@ -422,21 +422,61 @@ function renderGame() {
   setupMatch();
 }
 
+
 function buy(index) {
   if (!game) return;
 
-  const cost = 1.5 + index * 0.7;
+  const nomes = [
+    "Marco Alves", "Rui Mendes", "Enzo Costa",
+    "Daniel Rocha", "Leo Martins", "Caio Ramos"
+  ];
 
-  if (game.budget < cost) {
+  const posicoes = ["ATA", "MEI", "ZAG", "LAT", "VOL", "ATA"];
+  const custo = 1.5 + index * 0.7;
+
+  game.signedMarket = game.signedMarket || [];
+  game.pendingTransfers = game.pendingTransfers || [];
+
+  if (game.signedMarket.includes(index)) {
+    alert("Esse jogador já foi contratado.");
+    return;
+  }
+
+  if (game.budget < custo) {
     alert("Orçamento insuficiente.");
     return;
   }
 
-  game.budget -= cost;
-  game.news.unshift("O clube abriu negociação por um novo reforço.");
+  const jogador = {
+    name: nomes[index],
+    pos: posicoes[index],
+    ov: 70 + index,
+    age: rand(19, 29),
+    value: custo
+  };
+
+  game.budget -= custo;
+  game.signedMarket.push(index);
+
+  const mes = Number((game.careerDate || "2026-07-01").slice(5, 7));
+  const mesesAbertos = game.country === "Brasil"
+    ? [1, 2, 7, 8]
+    : [1, 7, 8];
+
+  if (mesesAbertos.includes(mes)) {
+    game.players.push(jogador);
+    game.news.unshift(jogador.name + " chegou ao elenco.");
+    alert(jogador.name + " contratado e disponível no elenco!");
+  } else {
+    game.pendingTransfers.push(jogador);
+    game.news.unshift(jogador.name + " chegará na próxima janela.");
+    alert(jogador.name + " contratado! Chegará na próxima janela.");
+  }
+
   renderGame();
   openTab("marketTab");
 }
+
 
 function openTab(id) {
   document.querySelectorAll(".tabpage").forEach(page => {
