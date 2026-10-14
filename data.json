@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "game": "Legado de Treinador",
+  "season": "2026",
+  "dataMode": "offline",
+  "licensing": {
+    "status": "pending",
+    "rule": "Não incluir nomes, imagens, escudos, elencos ou dados reais até verificar e documentar as permissões aplicáveis."
+  },
+  "countries": [],
+  "competitions": [],
+  "clubs": [],
+  "players": [],
+  "staff": [],
+  "fixtures": [],
+  "notes": [
+    "Estrutura inicial vazia: não contém dados reais de clubes ou jogadores.",
+    "Use identificadores estáveis (id) para relacionar competições, clubes, jogadores e partidas.",
+    "Dados fictícios de teste devem ser identificados separadamente e nunca apresentados como dados reais."
+  ]
+}
