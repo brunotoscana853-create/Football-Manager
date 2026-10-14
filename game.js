@@ -301,11 +301,51 @@ function makePlayers() {
   }));
 }
 
+
 function startCareer() {
   if (!selectedCountry || selectedDiv === null || !selectedClub) {
     alert("Escolha um país, uma divisão e um clube primeiro.");
     return;
   }
+
+  const division = DB[selectedCountry].divs[selectedDiv];
+
+  game = {
+    club: selectedClub,
+    country: selectedCountry,
+    division: division[0],
+    teams: [...division[2]],
+    budget: 18.5,
+    players: makePlayers(),
+    season: "2026/27",
+    careerDate: "2026-07-01",
+    matchday: 0,
+    pendingTransfers: [],
+    signedMarket: [],
+    opponent: division[2].find(
+      team => team !== selectedClub
+    ) || "Rival FC",
+
+    match: {
+      m: 0, s: 0, h: 0, a: 0,
+      run: false, spd: 1,
+      shotsH: 0, shotsA: 0,
+      attH: 0, attA: 0,
+      pos: 50, finished: false
+    },
+
+    news: [
+      "A diretoria apresentou suas metas para a temporada.",
+      "O elenco iniciou a pré-temporada."
+    ]
+  };
+
+  buildTable();
+  renderGame();
+  show("game");
+  openTab("homeTab");
+}
+
 
   const division = DB[selectedCountry].divs[selectedDiv];
 
