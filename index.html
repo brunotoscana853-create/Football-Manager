@@ -1,83 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Football Manager — Carreira</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#071b13">
+    <title>Legado de Treinador</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-  <section id="menu" class="screen active">
-    <div class="brand">
-      <div class="logo">FM</div>
-      <div><small>FOOTBALL MANAGER</small><h1>Manager Career</h1><p>Construa seu legado.</p></div>
-    </div>
-    <div class="menu-card">
-      <button id="newGame" class="main-btn">⚽ NOVO JOGO</button>
-      <button id="loadGame" class="main-btn dark">💾 CARREGAR JOGO</button>
-      <div id="saveList" class="save-list"></div>
-    </div>
-    <p class="legal">Clubes, atletas e identidades deste protótipo são fictícios.</p>
-  </section>
 
-  <section id="setup" class="screen">
-    <div class="setup-head"><button class="back" data-back="menu">← Voltar</button><h2>Novo jogo</h2></div>
-    <div class="setup-grid">
-      <div class="panel">
-        <h3>1. Escolha o país</h3>
-        <div id="countryList" class="choice-grid"></div>
-      </div>
-      <div class="panel">
-        <h3>2. Escolha a divisão</h3>
-        <div id="divisionList" class="division-list"></div>
-      </div>
-    </div>
-    <div class="panel clubs-panel">
-      <div class="club-head"><div><h3>3. Escolha seu clube</h3><p id="selectionHint">Selecione uma divisão.</p></div><button id="startCareer" class="main-btn small">Começar carreira</button></div>
-      <div id="clubList" class="club-grid"></div>
-    </div>
-  </section>
+<section id="menu" class="screen active">
+    <div class="menu-content">
+        <h1>⚽ LEGADO DE TREINADOR</h1>
+        <p>Construa sua história. Conquiste o mundo.</p>
 
-  <section id="game" class="screen">
+        <button id="newGame" class="main-btn">
+            ⚽ NOVO JOGO
+        </button>
+
+        <button id="loadGame" class="main-btn dark">
+            💾 CARREGAR JOGO
+        </button>
+
+        <div id="saveList"></div>
+    </div>
+</section>
+
+<section id="setup" class="screen">
     <header class="topbar">
-      <div><small>MANAGER CAREER</small><h2 id="clubTitle">Clube</h2></div>
-      <div class="top-actions"><span id="year">2026/27</span><button id="saveBtn">💾 Salvar</button><button id="menuBtn">☰ Menu</button></div>
+        <h2>Nova carreira</h2>
+        <button data-back="menu">Voltar</button>
     </header>
-    <nav class="tabs">
-      <button class="tab active" data-tab="homeTab">Visão geral</button>
-      <button class="tab" data-tab="squadTab">Elenco</button>
-      <button class="tab" data-tab="leagueTab">Campeonato</button>
-      <button class="tab" data-tab="marketTab">Mercado</button>
-      <button class="tab" data-tab="matchTab">Próxima partida</button>
-    </nav>
-    <main>
-      <section id="homeTab" class="tabpage active">
-        <div class="dashboard">
-          <div class="hero"><small>SEU CLUBE</small><h1 id="clubName">Aurora FC</h1><p id="clubMeta"></p><div class="money">Orçamento: <b id="budget"></b></div></div>
-          <div class="panel"><h3>Próxima partida</h3><div id="nextMatch" class="next-match"></div><button class="main-btn" data-open="matchTab">▶ Assistir partida</button></div>
-          <div class="panel"><h3>Objetivos da diretoria</h3><div id="objectives"></div></div>
-          <div class="panel"><h3>Notícias</h3><div id="news"></div></div>
-        </div>
-      </section>
-      <section id="squadTab" class="tabpage"><div class="panel"><h3>Elenco</h3><div id="squadTable" class="table"></div></div></section>
-      <section id="leagueTab" class="tabpage"><div class="panel"><h3 id="leagueTitle">Classificação</h3><div id="leagueTable" class="table"></div></div></section>
-      <section id="marketTab" class="tabpage"><div class="panel"><h3>Mercado de transferências</h3><div id="market" class="market-grid"></div></div></section>
-      <section id="matchTab" class="tabpage">
-        <div class="match-layout">
-          <div class="panel">
-            <div class="match-score"><strong id="homeTeam">Aurora FC</strong><div><b id="scoreH">0</b> — <b id="scoreA">0</b><small id="matchClock">PRÉ-JOGO</small></div><strong id="awayTeam">Rival</strong></div>
-            <div id="pitch" class="pitch"><div class="mid"></div><div class="circle"></div><div id="ball"></div><div id="playersH"></div><div id="playersA"></div></div>
-            <div class="controls"><button id="startMatch" class="main-btn">▶ Iniciar</button><button id="pauseMatch">⏸ Pausar</button><button class="speed active" data-speed="1">1x</button><button class="speed" data-speed="2">2x</button><button class="speed" data-speed="4">4x</button></div>
-          </div>
-          <aside><div class="panel"><h3>🎙️ Narração</h3><div id="commentary"></div></div><div class="panel"><h3>📊 Estatísticas</h3><div id="stats"></div></div></aside>
-        </div>
-      </section>
-    </main>
-  </section>
 
-  <div id="saveModal" class="modal"><div class="modal-box"><button id="closeModal" class="x">×</button><h2>Salvar carreira</h2><input id="saveName" placeholder="Nome do save"><button id="confirmSave" class="main-btn">Salvar agora</button></div></div>
+    <main class="setup-content">
+        <h3>1. Escolha seu país</h3>
+        <div id="countryList"></div>
+
+        <h3>2. Escolha a divisão</h3>
+        <div id="divisionList"></div>
+
+        <h3>3. Escolha seu clube</h3>
+        <p id="selectionHint">Selecione país e divisão.</p>
+        <div id="clubList"></div>
+
+        <button id="startCareer" class="main-btn">
+            COMEÇAR CARREIRA
+        </button>
+    </main>
+</section>
+
+<section id="game" class="screen">
+    <header class="topbar">
+        <div>
+            <h2 id="clubTitle">Meu clube</h2>
+            <p id="clubMeta"></p>
+        </div>
+        <div>
+            <span id="budget"></span>
+            <span id="year"></span>
+        </div>
+        <button id="menuBtn">Menu</button>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab active" data-tab="homeTab">Início</button>
+        <button class="tab" data-tab="squadTab">Elenco</button>
+        <button class="tab" data-tab="leagueTab">Campeonato</button>
+        <button class="tab" data-tab="marketTab">Mercado</button>
+        <button class="tab" data-tab="matchTab">Partida</button>
+    </nav>
+
+    <main class="game-content">
+        <section id="homeTab" class="tabpage active">
+            <h2 id="clubName"></h2>
+            <h3>Próxima partida</h3>
+            <div id="nextMatch"></div>
+
+            <h3>Objetivos</h3>
+            <div id="objectives"></div>
+
+            <h3>Notícias do clube</h3>
+            <div id="news"></div>
+
+            <button id="saveBtn" class="main-btn">Salvar carreira</button>
+        </section>
+
+        <section id="squadTab" class="tabpage">
+            <h2>Elenco profissional</h2>
+            <div id="squadTable"></div>
+        </section>
+
+        <section id="leagueTab" class="tabpage">
+            <h2 id="leagueTitle">Campeonato</h2>
+            <div id="leagueTable"></div>
+        </section>
+
+        <section id="marketTab" class="tabpage">
+            <h2>Mercado de transferências</h2>
+            <div id="market"></div>
+        </section>
+
+        <section id="matchTab" class="tabpage">
+            <h2>Central da partida</h2>
+
+            <div class="match-header">
+                <span id="homeTeam">Mandante</span>
+                <strong>
+                    <span id="scoreH">0</span>
+                    -
+                    <span id="scoreA">0</span>
+                </strong>
+                <span id="awayTeam">Visitante</span>
+            </div>
+
+            <h3 id="matchClock">PRÉ-JOGO</h3>
+
+            <div id="pitch" class="pitch">
+                <div class="pitch-line halfway"></div>
+                <div class="pitch-line center-circle"></div>
+                <div class="pitch-line penalty-left"></div>
+                <div class="pitch-line penalty-right"></div>
+                <div id="playersH"></div>
+                <div id="playersA"></div>
+                <div id="ball" class="ball"></div>
+            </div>
+
+            <div id="stats"></div>
+
+            <div class="match-controls">
+                <button id="startMatch" class="main-btn">▶ INICIAR / CONTINUAR</button>
+                <button id="pauseMatch" class="main-btn dark">⏸ PAUSAR</button>
+                <button class="speed active" data-speed="1">1x</button>
+                <button class="speed" data-speed="2">2x</button>
+                <button class="speed" data-speed="4">4x</button>
+            </div>
+
+            <h3>Relato da partida</h3>
+            <div id="commentary"></div>
+        </section>
+    </main>
+</section>
+
+<div id="saveModal" class="modal">
+    <div class="modal-content">
+        <h2>Salvar carreira</h2>
+        <input id="saveName" placeholder="Nome da carreira">
+        <button id="confirmSave" class="main-btn">CONFIRMAR</button>
+        <button id="closeModal" class="main-btn dark">CANCELAR</button>
+    </div>
 </div>
+
+<script>
+window.onerror = function(message, source, line, column) {
+    alert("Erro JavaScript: " + message + "\nLinha: " + line);
+    return false;
+};
+
+alert("Teste: HTML carregado corretamente!");
+</script>
+
 <script src="game.js"></script>
+
 </body>
 </html>
