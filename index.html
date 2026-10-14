@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -55,10 +56,12 @@
             <h2 id="clubTitle">Meu clube</h2>
             <p id="clubMeta"></p>
         </div>
+
         <div>
             <span id="budget"></span>
             <span id="year"></span>
         </div>
+
         <button id="menuBtn">Menu</button>
     </header>
 
@@ -73,6 +76,7 @@
     <main class="game-content">
         <section id="homeTab" class="tabpage active">
             <h2 id="clubName"></h2>
+
             <h3>Próxima partida</h3>
             <div id="nextMatch"></div>
 
@@ -82,7 +86,9 @@
             <h3>Notícias do clube</h3>
             <div id="news"></div>
 
-            <button id="saveBtn" class="main-btn">Salvar carreira</button>
+            <button id="saveBtn" class="main-btn">
+                Salvar carreira
+            </button>
         </section>
 
         <section id="squadTab" class="tabpage">
@@ -105,11 +111,13 @@
 
             <div class="match-header">
                 <span id="homeTeam">Mandante</span>
+
                 <strong>
                     <span id="scoreH">0</span>
                     -
                     <span id="scoreA">0</span>
                 </strong>
+
                 <span id="awayTeam">Visitante</span>
             </div>
 
@@ -120,6 +128,7 @@
                 <div class="pitch-line center-circle"></div>
                 <div class="pitch-line penalty-left"></div>
                 <div class="pitch-line penalty-right"></div>
+
                 <div id="playersH"></div>
                 <div id="playersA"></div>
                 <div id="ball" class="ball"></div>
@@ -128,8 +137,14 @@
             <div id="stats"></div>
 
             <div class="match-controls">
-                <button id="startMatch" class="main-btn">▶ INICIAR / CONTINUAR</button>
-                <button id="pauseMatch" class="main-btn dark">⏸ PAUSAR</button>
+                <button id="startMatch" class="main-btn">
+                    ▶ INICIAR / CONTINUAR
+                </button>
+
+                <button id="pauseMatch" class="main-btn dark">
+                    ⏸ PAUSAR
+                </button>
+
                 <button class="speed active" data-speed="1">1x</button>
                 <button class="speed" data-speed="2">2x</button>
                 <button class="speed" data-speed="4">4x</button>
@@ -144,19 +159,31 @@
 <div id="saveModal" class="modal">
     <div class="modal-content">
         <h2>Salvar carreira</h2>
-        <input id="saveName" placeholder="Nome da carreira">
-        <button id="confirmSave" class="main-btn">CONFIRMAR</button>
-        <button id="closeModal" class="main-btn dark">CANCELAR</button>
+
+        <input
+            id="saveName"
+            placeholder="Nome da carreira"
+        >
+
+        <button id="confirmSave" class="main-btn">
+            CONFIRMAR
+        </button>
+
+        <button id="closeModal" class="main-btn dark">
+            CANCELAR
+        </button>
     </div>
 </div>
 
 <script>
 window.onerror = function(message, source, line, column) {
-    alert("Erro JavaScript: " + message + "\nLinha: " + line);
+    alert(
+        "Erro JavaScript: " + message +
+        "\nLinha: " + line
+    );
+
     return false;
 };
-
-alert("Teste: HTML carregado corretamente!");
 </script>
 
 <script src="game.js"></script>
