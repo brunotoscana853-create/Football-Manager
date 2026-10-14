@@ -96,5 +96,3 @@ document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openTab(b.data
 document.getElementById('startMatch').onclick=startMatch;document.getElementById('pauseMatch').onclick=pauseMatch;
 document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{document.querySelectorAll('.speed').forEach(x=>x.classList.remove('active'));b.classList.add('active');game.match.spd=+b.dataset.speed});
 saves();
-console.log("JOGO CARREGADO COM SUCESSO");
-alert("Teste: JavaScript funcionando!");
