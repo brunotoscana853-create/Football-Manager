@@ -763,3 +763,301 @@ if (document.readyState === "loading") {
 } else {
   initializeGame();
 }
+
+/* ==========================================
+   LEGADO DE TREINADOR - EXPANSAO 1
+   Gestao, treino, base, estadio e carreira
+========================================== */
+(function () {
+  "use strict";
+
+  function prepararJogo() {
+    if (typeof game === "undefined" || !game) return false;
+
+    if (!game.manager) {
+      game.manager = {
+        reputation: 50,
+        salary: 10000,
+        morale: 75
+      };
+    }
+
+    if (!game.training) {
+      game.training = {
+        focus: "balanced",
+        sessions: 0
+      };
+    }
+
+    if (!game.academy) {
+      game.academy = {
+        level: 1,
+        players: []
+      };
+    }
+
+    if (!game.stadium) {
+      game.stadium = {
+        level: 1
+      };
+    }
+
+    return true;
+  }
+
+  function dinheiro(valor) {
+    return Number(valor || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      maximumFractionDigits: 0
+    });
+  }
+
+  function painelExpansao() {
+    if (!prepararJogo()) {
+      alert("Inicie ou carregue uma carreira primeiro.");
+      return;
+    }
+
+    var antigo = document.getElementById("lt-expansao");
+    if (antigo) antigo.remove();
+
+    var painel = document.createElement("div");
+    painel.id = "lt-expansao";
+    painel.style.cssText =
+      "position:fixed;inset:4%;z-index:99999;overflow:auto;" +
+      "background:#101b25;color:#fff;padding:18px;" +
+      "border:2px solid #42d392;border-radius:14px;" +
+      "font-family:Arial,sans-serif;box-sizing:border-box";
+
+    painel.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+        <h2 style="margin:0;color:#42d392">LEGADO DE TREINADOR</h2>
+        <button id="lt-fechar" style="padding:9px;background:#d94343;color:white;border:0;border-radius:6px">FECHAR ✕</button>
+      </div>
+      <p style="color:#bdc9d2">Central de desenvolvimento e gestão</p>
+      <hr style="border-color:#344653">
+
+      <h3>🏋️ Treinamento</h3>
+      <p>Escolha o foco dos treinos da equipe.</p>
+      <select id="lt-foco" style="padding:10px;width:100%;margin-bottom:8px">
+        <option value="balanced">Treino equilibrado</option>
+        <option value="attack">Ataque</option>
+        <option value="defense">Defesa</option>
+        <option value="physical">Preparação física</option>
+      </select>
+      <button id="lt-treinar" style="padding:12px;width:100%;background:#42d392;border:0;border-radius:7px;font-weight:bold">REALIZAR TREINAMENTO</button>
+      <p id="lt-resultado"></p>
+
+      <hr style="border-color:#344653">
+      <h3>🌱 Categorias de base</h3>
+      <p>Invista na estrutura para revelar jovens jogadores.</p>
+      <p id="lt-base"></p>
+      <button id="lt-revelar" style="padding:12px;width:100%;background:#237bc1;color:white;border:0;border-radius:7px">REVELAR JOVEM</button>
+      <button id="lt-base-up" style="padding:12px;width:100%;margin-top:8px;background:#344653;color:white;border:0;border-radius:7px">MELHORAR BASE</button>
+      <div id="lt-jovens"></div>
+
+      <hr style="border-color:#344653">
+      <h3>🏟️ Estádio</h3>
+      <p id="lt-estadio"></p>
+      <button id="lt-estadio-up" style="padding:12px;width:100%;background:#237bc1;color:white;border:0;border-radius:7px">AMPLIAR ESTÁDIO</button>
+
+      <hr style="border-color:#344653">
+      <h3>👔 Carreira do treinador</h3>
+      <p id="lt-carreira"></p>
+      <button id="lt-proposta" style="padding:12px;width:100%;background:#b88932;color:white;border:0;border-radius:7px">AVALIAR MINHA CARREIRA</button>
+      <p id="lt-oferta"></p>
+    `;
+
+    document.body.appendChild(painel);
+
+    function atualizar() {
+      prepararJogo();
+
+      document.getElementById("lt-base").textContent =
+        "Nível da base: " + game.academy.level;
+
+      document.getElementById("lt-estadio").textContent =
+        "Nível do estádio: " + game.stadium.level;
+
+      document.getElementById("lt-carreira").textContent =
+        "Reputação: " + game.manager.reputation +
+        " | Moral: " + game.manager.morale +
+        " | Salário: " + dinheiro(game.manager.salary);
+
+      document.getElementById("lt-jovens").innerHTML =
+        "<h4>Jovens revelados</h4>" +
+        (game.academy.players.length
+          ? game.academy.players.map(function (p, i) {
+              return "<p>" + (i + 1) + ". " + p.name +
+                " — " + p.position + " — Nota " + p.rating +
+                ' <button data-promover="' + i +
+                '" style="padding:5px">Promover</button></p>';
+            }).join("")
+          : "<p>Nenhum jovem revelado ainda.</p>");
+    }
+
+    document.getElementById("lt-fechar").onclick = function () {
+      painel.remove();
+    };
+
+    document.getElementById("lt-treinar").onclick = function () {
+      var foco = document.getElementById("lt-foco").value;
+      game.training.focus = foco;
+      game.training.sessions++;
+
+      var jogadores = Array.isArray(game.players) ? game.players :
+        (game.team && Array.isArray(game.team.players) ? game.team.players : []);
+
+      var atributo = foco === "attack" ? "attack" :
+        foco === "defense" ? "defense" :
+        foco === "physical" ? "stamina" : "overall";
+
+      var melhorados = 0;
+
+      jogadores.forEach(function (p) {
+        if (p && typeof p[atributo] === "number" && p[atributo] < 99) {
+          p[atributo] = Math.min(99, p[atributo] + 1);
+          melhorados++;
+        } else if (p && typeof p.overall === "number" &&
+                   foco === "balanced" && p.overall < 99) {
+          p.overall = Math.min(99, p.overall + 1);
+          melhorados++;
+        }
+      });
+
+      document.getElementById("lt-resultado").textContent =
+        "Sessão " + game.training.sessions +
+        " concluída. Jogadores com atributo melhorado: " +
+        melhorados + ".";
+      atualizar();
+    };
+
+    document.getElementById("lt-revelar").onclick = function () {
+      var nomes = ["Lucas", "Gabriel", "Matheus", "Pedro", "Rafael",
+        "Enzo", "Davi", "Caio", "Miguel", "Arthur"];
+      var posicoes = ["GOL", "ZAG", "LAT", "MEI", "ATA"];
+
+      var jovem = {
+        name: nomes[Math.floor(Math.random() * nomes.length)] +
+          " " + ["Silva", "Santos", "Oliveira", "Costa", "Souza"][
+            Math.floor(Math.random() * 5)],
+        age: 16 + Math.floor(Math.random() * 3),
+        position: posicoes[Math.floor(Math.random() * posicoes.length)],
+        rating: 50 + Math.floor(Math.random() * 16)
+      };
+
+      game.academy.players.push(jovem);
+      document.getElementById("lt-resultado").textContent =
+        "Novo jovem encontrado: " + jovem.name +
+        ", " + jovem.age + " anos, " + jovem.position +
+        ", nota " + jovem.rating + ".";
+      atualizar();
+    };
+
+    document.getElementById("lt-base-up").onclick = function () {
+      var custo = game.academy.level * 100000;
+
+      if (typeof game.money === "number" && game.money >= custo) {
+        game.money -= custo;
+      } else if (typeof game.budget === "number" && game.budget >= custo) {
+        game.budget -= custo;
+      } else {
+        alert("Saldo insuficiente ou orçamento não identificado. Custo: " +
+          dinheiro(custo));
+        return;
+      }
+
+      game.academy.level++;
+      atualizar();
+      alert("Centro de formação melhorado para nível " +
+        game.academy.level + "!");
+    };
+
+    document.getElementById("lt-estadio-up").onclick = function () {
+      var custo = game.stadium.level * 250000;
+
+      if (typeof game.money === "number" && game.money >= custo) {
+        game.money -= custo;
+      } else if (typeof game.budget === "number" && game.budget >= custo) {
+        game.budget -= custo;
+      } else {
+        alert("Saldo insuficiente ou orçamento não identificado. Custo: " +
+          dinheiro(custo));
+        return;
+      }
+
+      game.stadium.level++;
+      atualizar();
+      alert("Estádio ampliado para nível " + game.stadium.level + "!");
+    };
+
+    document.getElementById("lt-proposta").onclick = function () {
+      game.manager.reputation = Math.min(100,
+        game.manager.reputation + 1);
+
+      var reputacao = game.manager.reputation;
+      var salario = Math.round(
+        game.manager.salary * (1 + reputacao / 1000)
+      );
+
+      document.getElementById("lt-oferta").textContent =
+        reputacao >= 70
+          ? "Seu treinador tem reputação elevada! Salário de referência: " +
+            dinheiro(salario) + ". Esta é uma estimativa, não uma proposta real."
+          : "Continue treinando a equipe e conquistando resultados. " +
+            "Sua reputação atual é " + reputacao +
+            ". Ainda não existe uma proposta real de outro clube.";
+      atualizar();
+    };
+
+    document.getElementById("lt-jovens").onclick = function (evento) {
+      var botao = evento.target.closest("[data-promover]");
+      if (!botao) return;
+
+      var indice = Number(botao.dataset.promover);
+      var jovem = game.academy.players[indice];
+      if (!jovem) return;
+
+      if (!Array.isArray(game.players)) {
+        alert("A estrutura atual dos jogadores do elenco precisa ser integrada antes de promover jovens.");
+        return;
+      }
+
+      game.players.push({
+        name: jovem.name,
+        age: jovem.age,
+        position: jovem.position,
+        overall: jovem.rating
+      });
+
+      game.academy.players.splice(indice, 1);
+      atualizar();
+      alert(jovem.name + " foi adicionado ao elenco, se a estrutura aceitar novos jogadores.");
+    };
+
+    atualizar();
+  }
+
+  function instalarBotao() {
+    if (document.getElementById("lt-abrir-expansao")) return;
+
+    var botao = document.createElement("button");
+    botao.id = "lt-abrir-expansao";
+    botao.textContent = "🏆 GESTÃO AVANÇADA";
+    botao.style.cssText =
+      "position:fixed;bottom:14px;right:12px;z-index:99990;" +
+      "padding:12px;background:#42d392;color:#102019;" +
+      "font-weight:bold;border:0;border-radius:9px;" +
+      "box-shadow:0 3px 10px #0008";
+
+    botao.onclick = painelExpansao;
+    document.body.appendChild(botao);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", instalarBotao);
+  } else {
+    instalarBotao();
+  }
+})();
