@@ -347,35 +347,7 @@ function startCareer() {
 }
 
 
-  const division = DB[selectedCountry].divs[selectedDiv];
-
-  game = {
-    club: selectedClub,
-    country: selectedCountry,
-    division: division[0],
-    teams: [...division[2]],
-    budget: 18.5,
-    players: makePlayers(),
-    season: "2026/27",
-    opponent: division[2].find(team => team !== selectedClub) || "Rival FC",
-    match: {
-      m: 0, s: 0, h: 0, a: 0,
-      run: false, spd: 1,
-      shotsH: 0, shotsA: 0,
-      attH: 0, attA: 0,
-      pos: 50, finished: false
-    },
-    news: [
-      "A diretoria apresentou suas metas para a temporada.",
-      "O elenco iniciou a pré-temporada."
-    ]
-  };
-
-  buildTable();
-  renderGame();
-  show("game");
-  openTab("homeTab");
-}
+  
 
 /* =========================================
    CAMPEONATO E PAINEL DO CLUBE
