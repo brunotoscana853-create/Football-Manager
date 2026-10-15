@@ -344,6 +344,7 @@ function startCareer() {
   renderGame();
   show("game");
   openTab("homeTab");
+  autoSaveGame();
 }
 
 
@@ -680,6 +681,20 @@ function pauseMatch() {
     updateMatch();
   }
 }
+
+function autoSaveGame() {
+  if (!game) return;
+
+  try {
+    localStorage.setItem(
+      "fmcareer_current",
+      JSON.stringify(game)
+    );
+  } catch (error) {
+    console.warn("Falha no salvamento automático:", error);
+  }
+}
+
 
 /* =========================================
    SALVAMENTO E CARREGAMENTO
