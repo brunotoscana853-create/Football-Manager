@@ -317,8 +317,13 @@ function startCareer() {
     teams: [...division[2]],
     budget: 18.5,
     players: makePlayers(),
-    season: "2026/27",
-    careerDate: "2026-07-01",
+    season: selectedCountry === "Brasil"
+  ? "2026"
+  : "2026/27",
+
+careerDate: selectedCountry === "Brasil"
+  ? "2026-01-01"
+  : "2026-07-01",
     matchday: 0,
     pendingTransfers: [],
     signedMarket: [],
