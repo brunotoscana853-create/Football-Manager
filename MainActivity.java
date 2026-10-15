@@ -1,8 +1,10 @@
+
 package com.footballmanager.game;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -16,6 +18,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Mantém a tela ligada enquanto o jogo estiver aberto
+        getWindow().addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        );
 
         getWindow().getDecorView().setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -44,7 +51,9 @@ public class MainActivity extends Activity {
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public boolean onConsoleMessage(ConsoleMessage message) {
+            public boolean onConsoleMessage(
+                ConsoleMessage message
+            ) {
                 Log.e(
                     "LegadoJS",
                     message.message() +
@@ -54,7 +63,9 @@ public class MainActivity extends Activity {
             }
         });
 
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl(
+            "file:///android_asset/index.html"
+        );
     }
 
     @Override
