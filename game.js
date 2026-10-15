@@ -488,6 +488,7 @@ function buy(index) {
 
   renderGame();
   openTab("marketTab");
+  autoSaveGame();
 }
 
 
@@ -603,7 +604,7 @@ function matchTick() {
   if (!game || !game.match.run) return;
 
   const match = game.match;
-  match.s += match.spd;
+  match.s += match.spd * 4;
 
   if (match.s >= 60) {
     match.m += Math.floor(match.s / 60);
@@ -649,6 +650,7 @@ function matchTick() {
   }
 
   updateMatch();
+  autoSaveGame();
 }
 
 function startMatch() {
